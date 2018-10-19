@@ -85,5 +85,55 @@ namespace PSYEngine.Unity.Procedural
 
             return noiseMap;
         }
+
+        public Texture2D GenerateTexture(float[,] heightMap)
+        {
+            // Color map to convert to from height map
+            Color[] colorMap = new Color[Width * Height];
+
+            // Create new color map based on noise map
+            Parallel.For(0, Height, y =>
+            {
+                for (ushort x = 0; x < Width; x++)
+                    colorMap[(y * Width) + x] = Color.Lerp(Color.black, Color.white, heightMap[x, y]);
+            });
+
+            Texture2D texture = new Texture2D(Width, Height);
+
+            // Assigns color to texture. Extremely slow, thus 'Task'
+            texture.SetPixels(colorMap);
+            texture.Apply();
+
+            return texture;
+        }
+
+        public Mesh GenerateMesh(float[,] heightMap, float heightScale, AnimationCurve heightCurve)
+        {
+            int Width = heightMap.GetLength(0);
+            int Height = heightMap.GetLength(1);
+            float topLeftX = (Width - 1) / -2f;
+            float topLeftZ = (Height - 1) / 2f;
+
+            MeshData meshData = new MeshData(Width, Height);
+            int vertIndex = 0;
+
+            for (int y = 0; y < Height; y++)
+            {
+                for (int x = 0; x < Width; x++)
+                {
+                    meshData.Vertices[vertIndex] = new Vector3(topLeftX + x, heightMap[x, y] * heightScale, topLeftZ - y);
+                    meshData.UVs[vertIndex] = new Vector2(x / (float)Width, y / (float)Height);
+
+                    if (x < Width - 1 && y < Height - 1)
+                    {
+                        meshData.AddTriangle(vertIndex, vertIndex + Width + 1, vertIndex + Width);
+                        meshData.AddTriangle(vertIndex + Width + 1, vertIndex, vertIndex + 1);
+                    }
+                    vertIndex++;
+                }
+            }
+
+            return meshData.CreateMesh();
+        }
     }
 }
