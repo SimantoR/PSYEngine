@@ -1,8 +1,8 @@
 using UnityEngine;
 
-namespace PSYEngine.Unity.Procedural
+namespace PSYEngine.Procedural.Unity
 {
-    public struct MeshData
+    internal struct MeshData
     {
         public Vector3[] Vertices;
         public int[] Triangles;
@@ -12,7 +12,7 @@ namespace PSYEngine.Unity.Procedural
 
         private int tIndex;
 
-        public MeshData(int width, int height)
+        internal MeshData(int width, int height)
         {
             if (width * height >= 65000)
                 throw new UnityException("Mesh.vertices is too large. A mesh may not have more than 65000 vertices");

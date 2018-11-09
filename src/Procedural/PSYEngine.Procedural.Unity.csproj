@@ -1,0 +1,27 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net471</TargetFramework>
+    <RootNamespace>PSYEngine.Procedural.Unity</RootNamespace>
+    <AssemblyName>PSYEngine.Procedural.Unity</AssemblyName>
+    <OutputPath>../bin/</OutputPath>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>SignKey.pfx</AssemblyOriginatorKeyFile>
+    <DelaySign>false</DelaySign>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Memory" Version="4.5.1" />
+    <PackageReference Include="System.Runtime" Version="4.3.0" />
+    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="4.5.2" />
+    <ProjectReference Include="..\PSYEngine.Procedural\PSYEngine.Procedural.csproj" />
+    <Reference Include="UnityEngine">
+      <HintPath>../Packages/UnityEngine.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
